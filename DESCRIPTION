@@ -1,0 +1,33 @@
+Package: doctr
+Type: Package
+Title: Smart Modeling Diagnostics
+Version: 0.5.0
+Author: c(person(given = "Caleb"),
+                   family = "Palmer",
+                   role = c("aut", "cre",
+                   email = "palme609@umn.edu))
+Maintainer: Caleb Palmer <palme609@umn.edu>
+Description: Model diagnostics and adjustments using a common syntax.
+License: GPL (>= 2)
+URL: http://github.com/calebwpalmer/doctr
+BugReports: http://github.com/calebwpalmer/doctr/issues
+Depends: 
+    R (>= 4.0.0),
+    magrittr,
+    dplyr,
+    purrr,
+    knitr,
+    ggplot2,
+    rlang
+Suggests: 
+    gtsummary,
+    npreg,
+    survival,
+    rmarkdown
+VignetteBuilder: 
+    knitr
+Remotes:
+Encoding: UTF-8
+LazyData: yes
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.1

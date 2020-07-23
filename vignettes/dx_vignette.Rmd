@@ -1,0 +1,83 @@
+---
+title: "dx_vignette"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{dx_vignette}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(doctr)
+```
+
+
+"All models are wrong, and some are useful" -George Box
+
+the dx() function, medical shorthand for diagnosis, is used to calculate model diagnostics.
+
+We will use the star wars dataset for this vignette, which is loaded with the dplyr package.
+
+```{r}
+library(dplyr)
+df_starwars <- dplyr::starwars
+```
+
+Let's see if we can predict a character's height by using their mass:
+
+```{r}
+lm_starwars <- lm(height ~ mass, data = df_starwars)
+summary(lm_starwars)
+```
+
+It looks like mass is not a significant predictor of height (p-value = 0.312). Let's take a closer look at our data and see if we have any potential outliers.
+
+doctr comes with a variety of statistical tests that can be used for model diagnostics. Each diagnostic contains the prefix "dx_". Common diagnostic tests used for linear modeling are Standardized Residuals, Student Residuals, Cook's Distance, and the Difference in Fits (DFITS). We can call these individually:
+
+```{r}
+dx_res_stand(lm_starwars)
+dx_res_stud(lm_starwars)
+dx_cooks(lm_starwars)
+dx_dif_fits(lm_starwars)
+```
+
+Or by using dx(), which will automatically select dx tests depending on the model used. Since our model is a linear model (lm), dx() will select Standardized Residuals, Student Residuals, Cook's Distance, and the Difference in Fits. dx () can also be used to manually call diagnostic tests.
+
+```{r}
+dx(lm_starwars)
+
+dx(lm_starwars, dx_cooks(), dx_res_stand())
+```
+
+It looks like there are a couple potential outliers, but observation 16 seems to be particularly problematic. Although we are using conventional thresholds, manually defined thresholds can be used as well. Let's see how far we can push Cook's distance and the DFITS:
+
+```{r}
+dx_cooks(lm_starwars, 500)
+dx_dif_fits(lm_starwars, 50)
+```
+
+Normally the common thresholds for Cook's distance and DFITS is 1, observation 16 is a pretty significant outlier. Let's take a look at it:
+
+```{r}
+df_starwars[16,]
+```
+
+Looks like Jabba the Hutt was the outlier, as his mass:height ratio is much different than the rest of the sample. Let's remove him from our df and try our model again.
+
+```{r}
+df_sans_jabba <- df_starwars %>% 
+  filter(name != "Jabba Desilijic Tiure")
+
+lm_sans_jabba <- lm(height ~ mass, data = df_sans_jabba)
+summary(lm_sans_jabba)
+
+```
+
+That's much better! Mass is now a highly significant predictor of height, and our model now accounts for 58% of variability in height among all Star Wars characters (except for Hutts)
