@@ -9,17 +9,18 @@
 dx_select <- function(model) {
   mclass <- class(model)
   
-  if(mclass [[1]] == "lm") {
-    dx_calls <- exprs(dx_res_stand(),
+dx_calls <<- if(mclass [[1]] == "lm") {
+    exprs(
+      dx_res_stand(),
               dx_res_stud(),
               dx_cooks(),
-              dx_dif_fits())
+              dx_dfits())
   }
   
   else if(model.type == "glm") {
-    funs <- c(dx_cooks())
+    exprs(dx_cooks())
   }
   
-  return(dx_calls)
+  dx_calls
 }
 
