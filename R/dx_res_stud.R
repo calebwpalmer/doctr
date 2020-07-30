@@ -20,6 +20,10 @@ dx_res_stud <- function(.model, .threshold = 2, .out = TRUE, .viz = TRUE) {
   
   model_name <- deparse(substitute(.model))
   
+  dx_return <- list()
+  
+  dx_return$dx <- c("Student Residuals:")
+  
   diag <- ls.diag(.model)
   diag.df <- diag$stud.res %>%
     as.data.frame() %>%
@@ -28,9 +32,8 @@ dx_res_stud <- function(.model, .threshold = 2, .out = TRUE, .viz = TRUE) {
     select("Observation Number", "Student Residuals")
   if(.out == TRUE) {
     obs <- diag.df %>%
-    filter(abs(`Student Residuals`) > .threshold) %>%
-    print(.)
-    out <- list("Student Residuals", obs)
+    filter(abs(`Student Residuals`) > .threshold)
+    dx_return$output <- obs
   }
   
   if(.viz == TRUE) {
@@ -41,6 +44,10 @@ dx_res_stud <- function(.model, .threshold = 2, .out = TRUE, .viz = TRUE) {
       coord_cartesian(ylim = c(.threshold * -2,.threshold * 2)) +
       ggtitle(paste0(model_name, ": Student Residuals"))  +
       labs(x = "Observation Number", y = "Residual Distance")
-    print(viz)
+    dx_return$visualization <- viz
   }
+  
+  class(dx_return) <- "dx_fn"
+  dx_return
+  
 }

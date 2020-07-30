@@ -12,13 +12,19 @@ dx_cooks <-function(.model, .threshold = 1, .out = TRUE, .viz = TRUE) {
   if(missing(.model))
     stop("dx functions require a model object")
   if(missing(.threshold))
-    threshold <- 1
+    .threshold <- 1
+  if(!.threshold > 0 | !is.numeric(.threshold))
+    stop(".threshold must be a number greater than 0")
   if(missing(.out))
     .out <- TRUE
   if(missing(.viz))
     .viz <- TRUE
   
   model_name <- deparse(substitute(.model))
+  
+  dx_return <- list()
+  
+  dx_return$dx <- c("Cook's Distance:")
   
   diag <- ls.diag(.model)
   diag.df <- diag$cooks %>%
@@ -28,9 +34,8 @@ dx_cooks <-function(.model, .threshold = 1, .out = TRUE, .viz = TRUE) {
     select("Observation Number", "Cook's Distance")
   if(.out == TRUE) {
     obs <- diag.df %>%
-    filter(abs(`Cook's Distance`) > .threshold) %>%
-    print(.)   
-    out <- list("Cook's Distance", obs)
+    filter(abs(`Cook's Distance`) > .threshold)
+    dx_return$output <- obs
   }
   
   if(.viz == TRUE) {
@@ -41,6 +46,10 @@ dx_cooks <-function(.model, .threshold = 1, .out = TRUE, .viz = TRUE) {
       coord_cartesian(ylim = c(0, .threshold*2)) +
       ggtitle(paste0(model_name, ": Cook's Distance"))  +
       labs(x = "Observation Number", y = "Cook's Distance")
-    print(viz)
+    dx_return$visualization <- viz
   }
+  
+  class(dx_return) <- "dx_fn"
+  dx_return
+  
 }

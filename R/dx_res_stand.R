@@ -20,6 +20,10 @@ dx_res_stand <- function(.model, .threshold = 3, .out = TRUE, .viz = TRUE) {
   
   model_name <- deparse(substitute(.model))
   
+  dx_return <- list()
+  
+  dx_return$dx <- c("Standardized Residuals:")
+  
   diag <- ls.diag(.model)
   diag.df <- diag$std.res %>%
     as.data.frame() %>%
@@ -28,9 +32,8 @@ dx_res_stand <- function(.model, .threshold = 3, .out = TRUE, .viz = TRUE) {
     select("Observation Number", "Standardized Residuals")
   if(.out == TRUE) {
     obs <- diag.df %>%
-    filter(abs(`Standardized Residuals`) > .threshold) %>%
-    print(.)
-    out <- list("Standardized Residuals", obs)
+    filter(abs(`Standardized Residuals`) > .threshold)
+    dx_return$output <- obs
   }
   
   if(.viz == TRUE) {
@@ -41,6 +44,10 @@ dx_res_stand <- function(.model, .threshold = 3, .out = TRUE, .viz = TRUE) {
       coord_cartesian(ylim = c(.threshold * -2,.threshold * 2)) +
       ggtitle(paste0(model_name, ": Standardized Residuals"))  +
       labs(x = "Observation Number", y = "Residual Distance")
-    print(viz)
+    dx_return$visualization <- viz
   }
+  
+  class(dx_return) <- "dx_fn"
+  dx_return
+  
 }
