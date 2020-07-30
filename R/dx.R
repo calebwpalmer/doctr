@@ -21,7 +21,7 @@
 #'   \item \code{\link{dx_cooks}}
 #'   \item \code{\link{dx_res_stand}}
 #'   \item \code{\link{dx_res_stud}}
-#'   \item \code{\link{dx_dif_fits}}
+#'   \item \code{\link{dx_dfits}}
 #' }
 #' 
 #' @examples 
@@ -39,23 +39,29 @@ dx <- function(.model, ..., .out = TRUE, .viz = TRUE) {
     .viz <- TRUE
     }
 
-  envcur <- current_env()
+  mname <- match.call()$.model
   
   out <- enquo(.out)
   viz <- enquo(.viz)
   
   dx_calls <- exprs(...)
 
-  if(length(dx_calls) == 0) dx_calls <- doctr:::dx_select(model = .model)
+  if(length(dx_calls) == 0) {
+    dx_calls <- doctr:::dx_select(model = .model)
+    }
   
-  dx_results <- map(.x = dx_calls, .f = ~ {
-    set_model <- call_modify(.x, .model = enexpr(.model))
+  dx_fns <- map(.x = dx_calls, .f = ~ {
+    set_model <- call_modify(.x, .model = enexpr(mname))
     stand_fn <- call_standardise(set_model)
     set_out <- if(is.null(stand_fn$out)) {
       call_modify(stand_fn, .out = .out)} else {stand_fn}
     set_viz <- if(is.null(set_out$viz)) {
       call_modify(set_out, .viz = .viz)} else {set_out}
-  }, .model, .out = out, .viz = viz) %>% 
-  map(., .f = ~ exec(as.function(list(.))), envcur)
-  return(dx_results)
+    call_standardise(set_viz)
+  },mname, .out = out, .viz = viz)
+  
+  dx_results <- dx_fns %>% 
+    map(., .f = ~ exec(as.function(list(.))))
+  
+  dx_results
 }
