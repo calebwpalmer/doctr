@@ -35,7 +35,7 @@ lm() diagnostics:
 \item \code{\link{dx_cooks}}
 \item \code{\link{dx_res_stand}}
 \item \code{\link{dx_res_stud}}
-\item \code{\link{dx_dif_fits}}
+\item \code{\link{dx_dfits}}
 }
 }
 \examples{
