@@ -7,7 +7,7 @@
 #' @param visualisation Print plot to plotting window.
 #'
 
-dx_dif_fits <- function(.model, .threshold = 1, .out = TRUE, .viz = TRUE) {  
+dx_dfits <- function(.model, .threshold = 1, .out = TRUE, .viz = TRUE) {  
   
   if(missing(.model))
     stop("dx functions require a model object")
@@ -19,6 +19,11 @@ dx_dif_fits <- function(.model, .threshold = 1, .out = TRUE, .viz = TRUE) {
     .viz <- TRUE
   
   model_name <- deparse(substitute(.model))
+  
+  dx_return <- list()
+  
+  dx_return$dx <- c("DFITS:")
+  
   diag <- ls.diag(.model)
   diag.df <- diag$dfits %>%
     as.data.frame() %>%
@@ -27,9 +32,8 @@ dx_dif_fits <- function(.model, .threshold = 1, .out = TRUE, .viz = TRUE) {
     select("Observation Number", "DFITS")
   if(.out == TRUE) {
     obs <- diag.df %>%
-      filter(abs(`DFITS`) > .threshold) %>%
-      print(.)
-    out <- list("DFITS", obs)
+      filter(abs(`DFITS`) > .threshold)
+    dx_return$output <- obs
   }
   
   if(.viz == TRUE) {
@@ -40,6 +44,10 @@ dx_dif_fits <- function(.model, .threshold = 1, .out = TRUE, .viz = TRUE) {
     coord_cartesian(ylim = c(.threshold * -2,.threshold * 2)) +
     ggtitle(paste0(model_name,": DFITS"))  +
     labs(x = "Observation Number", y = "DFITS Statistic")
-    print(viz)
+    dx_return$visualization <- viz
   }
+  
+  class(dx_return) <- "dx_fn"
+  dx_return
+  
 }
