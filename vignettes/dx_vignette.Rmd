@@ -48,7 +48,9 @@ dx_cooks(lm_starwars)
 dx_dfits(lm_starwars)
 ```
 
-We can also use dx(), which will assign the model to each dx function called. If dx is called without a specified dx_test(s), it will automatically assign conventional tests for the model type and family.
+We can also use dx(), which will assign the model to each dx function called. If dx is called without a specified dx_test(s), it will automatically assign conventional tests for the model type and family.*
+
+* automatic assignment currently only works for lm
 
 ```{r}
 dx(lm_starwars, dx_cooks(), dx_res_stand())
