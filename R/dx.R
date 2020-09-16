@@ -1,15 +1,22 @@
 #' Diagnose model
-#' @export
+#' 
+#' `dx()` functions as a wrapper for all dx functions. It applies the same model
+#' to all included dx functions. If no dx functions are provided by the user, dx
+#' will select predetermined dx functions based on the model class and family.
+#' 
+#' User-provided dx functions may be altered in-line. All arguments within
+#' user-provided dx functions will ignore `dx()` arguments
+#' 
 #' @param .model A model.
-#' @param ... One or more unquoted dx functions (see details). User-defined
+#' @param ... One or more unquoted dx functions (see details). User-provided
 #' dx functions can receive arguments native to the function and will supersede
 #' dx arguments. Leaving "..." blank will cause dx to automatically select 
 #' dx functions based on model class and family. See details for documentation
 #' on selected dx_functions.
-#' @param .out Print output to console. User-defined dx functions will overwrite
-#' this argument.
-#' @param .viz Print plots to plotting window. User-defined dx functions will
-#' overwrite this argument.
+#' @param .out Print output to console. User-defined arguments within dx functions
+#' will ignore this argument.
+#' @param .viz Print plots to plotting window. User-defined arguments within dx
+#' functions will ignore this argument.
 #'
 #' @details A blank "..." will cause dx to automatically select dx functions
 #' based on class and family (if applicable).
@@ -24,9 +31,7 @@
 #'   \item \code{\link{dx_dfits}}
 #' }
 #' 
-#' @examples 
-#' dx(model)
-#' dx(model, dx_cooks(threshold = 2, out = TRUE), dx_res_stand(),out = FALSE)
+#' @export
 
 dx <- function(.model, ..., .out = TRUE, .viz = TRUE) {
   if(missing(.model)) {

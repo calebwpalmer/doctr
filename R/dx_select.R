@@ -9,7 +9,7 @@
 dx_select <- function(model) {
   mclass <- class(model)
   
-dx_calls <<- if(mclass [[1]] == "lm") {
+dx_calls <- if(mclass [[1]] == "lm") {
     exprs(
       dx_res_stand(),
               dx_res_stud(),

@@ -6,6 +6,9 @@
 \usage{
 \method{print}{dx_fn}(dx_fn)
 }
+\arguments{
+\item{dx_fn}{dx function.}
+}
 \description{
 Print dx functions
 }

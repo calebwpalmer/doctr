@@ -10,11 +10,11 @@ dx_res_stand(.model, .threshold = 3, .out = TRUE, .viz = TRUE)
 \item{.model}{A model}
 
 \item{.threshold}{Cutoff point for significant values, used for output and
-visualization. A missing argument will use a threshold of 3.}
+visualization. No argument will use a threshold of 3.}
 
 \item{.out}{Print output to console.}
 
-\item{.visualisation}{Print plot to plotting window.}
+\item{.viz}{Print visualization to plotting window.}
 }
 \description{
 Standardized Residuals

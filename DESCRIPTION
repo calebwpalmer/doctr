@@ -13,7 +13,6 @@ URL: http://github.com/calebwpalmer/doctr
 BugReports: http://github.com/calebwpalmer/doctr/issues
 Depends: 
     R (>= 4.0.0),
-    magrittr,
     dplyr,
     purrr,
     knitr,

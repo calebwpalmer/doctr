@@ -1,10 +1,10 @@
 #' DFITS
 #' @export
-#' @param model A model
-#' @param threshold Cutoff point for significant values, used for output and visualization.
+#' @param .model A model
+#' @param .threshold Cutoff point for significant values, used for output and visualization.
 #'  No argument will use a threshold of 1.
-#' @param out Print output to console.
-#' @param visualisation Print plot to plotting window.
+#' @param .out Print output to console.
+#' @param .viz Print visualization to plotting window.
 #'
 
 dx_dfits <- function(.model, .threshold = 1, .out = TRUE, .viz = TRUE) {  

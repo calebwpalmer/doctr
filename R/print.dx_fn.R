@@ -1,5 +1,6 @@
 #' Print dx functions
 #' @export
+#' @param dx_fn dx function.
 
 print.dx_fn <- function(dx_fn) {
   writeLines(dx_fn$dx)

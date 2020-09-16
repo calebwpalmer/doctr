@@ -2,9 +2,9 @@
 #' @export
 #' @param .model A model
 #' @param .threshold Cutoff point for significant values, used for output and
-#'  visualization. A missing argument will use a threshold of 3.
+#'  visualization. No argument will use a threshold of 3.
 #' @param .out Print output to console.
-#' @param .visualisation Print plot to plotting window.
+#' @param .viz Print visualization to plotting window.
 #'
 
 dx_res_stand <- function(.model, .threshold = 3, .out = TRUE, .viz = TRUE) {

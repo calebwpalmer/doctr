@@ -7,14 +7,14 @@
 dx_dfits(.model, .threshold = 1, .out = TRUE, .viz = TRUE)
 }
 \arguments{
-\item{model}{A model}
+\item{.model}{A model}
 
-\item{threshold}{Cutoff point for significant values, used for output and visualization.
+\item{.threshold}{Cutoff point for significant values, used for output and visualization.
 No argument will use a threshold of 1.}
 
-\item{out}{Print output to console.}
+\item{.out}{Print output to console.}
 
-\item{visualisation}{Print plot to plotting window.}
+\item{.viz}{Print visualization to plotting window.}
 }
 \description{
 DFITS

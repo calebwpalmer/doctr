@@ -38,7 +38,3 @@ lm() diagnostics:
 \item \code{\link{dx_dfits}}
 }
 }
-\examples{
-dx(model)
-dx(model, dx_cooks(threshold = 2, out = TRUE), dx_res_stand(),out = FALSE)
-}

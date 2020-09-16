@@ -10,7 +10,7 @@ dx_cooks(.model, .threshold = 1, .out = TRUE, .viz = TRUE)
 \item{.model}{A model}
 
 \item{.threshold}{Cutoff point for significant values, used for output and visualisation.
-Null argument will use a threshold of 1.}
+No argument will use a threshold of 1.}
 
 \item{.out}{Print output to console.}
 

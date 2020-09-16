@@ -37,9 +37,9 @@ lm_starwars <- lm(height ~ mass, data = df_starwars)
 summary(lm_starwars)
 ```
 
-It looks like mass is not a significant predictor of height (p-value = 0.312) and the model was not a great predictor of variability in height (Adj. R^2 > 0.001). Let's take a closer look at our data and see if we have any potential outliers.
+It looks like mass is not a significant predictor of height (p-value = 0.312) and the model was not a great predictor of variability in height (Adj. R^2 < 0.001). Let's take a closer look at our data and see if we have any potential outliers.
 
-doctr comes with a variety of statistical tests that can be used for model diagnostics. Each diagnostic contains the prefix "dx_" for easy reference. Common diagnostic tests used for linear modeling are Standardized Residuals, Student Residuals, Cook's Distance, and the Difference in Fits (DFITS). We can call these individually:
+doctr provides a number of statistical tests that can be used for model diagnostics. All tests within doctr contain the prefix "dx_" for a unified syntax. Common diagnostic tests used for linear modeling are Standardized Residuals, Student Residuals, Cook's Distance, and the Difference in Fits (DFITS). We can call these individually:
 
 ```{r}
 dx_res_stand(lm_starwars)
@@ -48,30 +48,32 @@ dx_cooks(lm_starwars)
 dx_dfits(lm_starwars)
 ```
 
-We can also use dx(), which will assign the model to each dx function called. If dx is called without a specified dx_test(s), it will automatically assign conventional tests for the model type and family.*
+We can also use dx(), which will assign the model to each dx function called. If dx is called without specified dx_test(s), it will automatically assign conventional tests for the model type and family.*
 
-* automatic assignment currently only works for lm
+* automatic selection currently only works for lm() class models.
 
 ```{r}
 dx(lm_starwars, dx_cooks(), dx_res_stand())
 
 dx(lm_starwars)
+
+test <- dx(lm_starwars)
 ```
 
-It looks like there are several potential outliers, but observation 16 seems to be particularly problematic. Although we are using conventional thresholds, manually defined thresholds can be used as well. Let's see how far we can push Cook's distance and the DFITS:
+It looks like there are several potential outliers, but observation 16 is particularly problematic. Although we are using conventional thresholds, manually defined thresholds can be used as well. Let's see how far we can push Cook's distance and the DFITS:
 
 ```{r}
 dx_cooks(lm_starwars, .threshold = 500)
 dx_dfits(lm_starwars, 50)
 ```
 
-Normally the common thresholds for Cook's distance and DFITS is 1, observation 16 is a pretty significant outlier. Let's take a look at it:
+Normally the common thresholds for Cook's distance and DFITS is 1, observation 16 is a pretty significant outlier. Let's take a look at the observation's row:
 
 ```{r}
 df_starwars[16,]
 ```
 
-Looks like Jabba the Hutt was the outlier, as his mass:height ratio is much different than the rest of the sample. Let's remove him from our df and try our model again.
+Jabba the Hutt was the outlier, as his mass:height ratio is much different than the rest of the sample. Let's remove him from our df and try our model again.
 
 ```{r}
 df_sans_jabba <- df_starwars %>% 
